@@ -1,6 +1,7 @@
 import 'package:fashion/core/constant/app_color.dart';
 import 'package:fashion/core/services/auth_service.dart';
 import 'package:fashion/features/auth/views/widgets/auth_form_field.dart';
+import 'package:fashion/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -74,11 +75,27 @@ class _LoginViewState extends State<LoginView> {
                             content: Text('Login Success'),
                           ),
                         );
+
+                        // Navigate to HomePage
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomePage()),
+                        );
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Login failed: $e'),
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: Text('User not found'),
+                          title: const Text('Error'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
                         ),
                       );
                     }
