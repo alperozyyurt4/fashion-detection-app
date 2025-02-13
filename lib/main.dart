@@ -1,4 +1,4 @@
-import 'package:fashion/features/auth/views/auth_view.dart';
+import 'package:fashion/features/auth/views/login_view.dart';
 import 'package:fashion/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: AuthPage(),
+      home: LoginView(),
     );
   }
 }

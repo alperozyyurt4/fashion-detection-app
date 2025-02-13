@@ -1,51 +1,42 @@
-import 'package:fashion/features/auth/views/login_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fashion/features/seller/profile_view.dart';
+import 'package:fashion/upload_image.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final User? user = FirebaseAuth.instance.currentUser;
+  _HomePageState createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0; // Aktif sayfa indeksi
+  final List<Widget> _pages = [
+    ImagePredictionPage(), // Tahmin sayfası
+    ProfilePage(), // Profil sayfası
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginView()),
-            );
-          },
-        ),
-        title: const Text('Home Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: user != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome, ${user.email ?? "User"}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Your UID: ${user.uid}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                )
-              : const Text(
-                  'No user logged in.',
-                  style: TextStyle(fontSize: 18),
-                ),
-        ),
+      body: _pages[_currentIndex], // Mevcut sayfa
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex, // Aktif sayfa
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index; // Aktif sayfayı değiştir
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.image_search),
+            label: 'Tahmin',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
       ),
     );
   }
